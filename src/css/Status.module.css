@@ -1,0 +1,13 @@
+.statusText {
+  margin: 0;
+}
+
+.statusContainer{
+  padding: 0;
+  min-height: 13vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
