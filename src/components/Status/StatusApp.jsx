@@ -1,4 +1,5 @@
-import styles from '../../css/Status.module.css'
+import React from 'react';
+import styles from '../../css/Status.module.css';
 
 function StatusApp(props) {
   const {
@@ -8,7 +9,7 @@ function StatusApp(props) {
     isFinished,
     isWin,
     resetGame,
-  } = props
+  } = props;
 
   return (
     <div className={styles.statusContainer}>
@@ -24,7 +25,7 @@ function StatusApp(props) {
         </button>
       }
     </div>
-  )
+  );
 }
 
 export default StatusApp;

@@ -1,24 +1,20 @@
-import Row from './Row'
+import React from 'react';
+import Row from './Row';
 
-import styles from '../../css/Keyboard.module.css'
+import styles from '../../css/Keyboard.module.css';
 
-function KeyboardApp({ keyboard }) {
+function KeyboardApp({ keyboardStatuses }) {
+  const Row1 = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
+  const Row2 = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
+  const Row3 = ["Z", "X", "C", "V", "B", "N", "M"];
+
   return (
     <div className={styles.keyboard}>
-      <Row
-        keyboard={keyboard}
-        letters={["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"]}
-      ></Row>
-      <Row
-        keyboard={keyboard}
-        letters={["A", "S", "D", "F", "G", "H", "J", "K", "L"]}
-      ></Row>
-      <Row
-        keyboard={keyboard}
-        letters={["Z", "X", "C", "V", "B", "N", "M"]}
-      ></Row>
+      {[Row1, Row2, Row3].map((row, i) => (
+        <Row key={i} keyboardStatuses={keyboardStatuses} letters={row}></Row>
+      ))}
     </div>
-  )
+  );
 }
 
 

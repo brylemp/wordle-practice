@@ -1,134 +1,178 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 
-import KeyboardApp from './Keyboard/KeyboardApp'
-import DisplayApp from './Display/DisplayApp'
-import StatusApp from './Status/StatusApp'
+import KeyboardApp from './Keyboard/KeyboardApp';
+import DisplayApp from './Display/DisplayApp';
+import StatusApp from './Status/StatusApp';
 
-import styles from '../css/App.module.css'
-import getWord from '../../lib/word/getter'
-import validateWord from '../../lib/word/validator'
+import styles from '../css/App.module.css';
+import getWord from '../../lib/word/getter';
+import validateWord from '../../lib/word/validator';
 
 import {
-  emptyWords, enterKeyCode, backSpaceKeyCode,
-  AkeyCode, ZkeyCode, keyDown, alphabet,
+  WORD_LENGTH,
+  GUESS_ATTEMPTS,
+  KEY_DOWN,
+  ENTER_KEY,
+  BACK_SPACE_KEY,
+  A_KEY,
+  Z_KEY,
+  EMPTY_WORDS,
+  KEYBOARD,
+} from './constants';
+
+import {
+  NO_MATCH,
+  CORRECT_PLACEMENT,
+  CORRECT_LETTER,
 } from './constants';
 
 function App() {
-  const [correctWord, setCorrectWord] = useState('RANDO')
-  const [currentWord, setCurrentWord] = useState('')
-  const [submittedWords, setSubmittedWords] = useState(emptyWords)
-  const [index, setIndex] = useState(0)
-  const [isFinished, setIsFinished] = useState(false)
-  const [isWin, setIsWin] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
-  const [isInvalid, setIsInvalid] = useState(false)
-  const [keyboard, setKeyboard] = useState(alphabet)
+  const [correctWord, setCorrectWord] = useState('RANDO');
+  const [currentWord, setCurrentWord] = useState('');
+  const [submittedWords, setSubmittedWords] = useState(EMPTY_WORDS);
+  const [attempt, setAttempt] = useState(0);
+  const [keyboard, setKeyboard] = useState(KEYBOARD);
 
-  const maxLength = 5
-  const numOfTries = 6
+  const [isFinished, setIsFinished] = useState(false);
+  const [isWin, setIsWin] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isInvalid, setIsInvalid] = useState(false);
 
+  // Set starting word
   useEffect(() => {
     async function fetchData() {
-      if (!isLoading) {
-        return
-      }
-      const gotWord = await getWord(maxLength);
+      if (!isLoading) { return; }
+      const gotWord = await getWord(WORD_LENGTH);
       setCorrectWord(gotWord.toUpperCase());
-      setIsLoading(false)
+      setIsLoading(false);
     }
     fetchData();
-  }, [isLoading])
+  }, [isLoading]);
 
+  // Capture keyboard on keydown
   useEffect(() => {
-    window.addEventListener(keyDown, handleKeyDown);
+    window.addEventListener(KEY_DOWN, handleKeyDown);
 
     return () => {
-      window.removeEventListener(keyDown, handleKeyDown);
+      window.removeEventListener(KEY_DOWN, handleKeyDown);
     };
-  }, [currentWord, isLoading, isInvalid])
+  }, [currentWord, isLoading, isInvalid]);
 
   const handleKeyDown = ({ keyCode }) => {
-    if (isLoading) {
-      return
+    if (isLoading) { return; }
+
+    if (keyCode === BACK_SPACE_KEY) {
+      setCurrentWord(cw => cw.slice(0, -1));
+      return;
     }
 
-    if (keyCode === backSpaceKeyCode) {
-      setCurrentWord(cw => cw.slice(0, -1))
-      return
+    if (keyCode === ENTER_KEY && currentWord.length === WORD_LENGTH) {
+      handleEnter();
+      return;
     }
 
-    if (keyCode === enterKeyCode && currentWord.length === maxLength) {
-      handleEnter()
-      return
+    if (currentWord.length > WORD_LENGTH - 1) { return; }
+    if (keyCode < A_KEY || keyCode > Z_KEY) { return; }
+
+    setCurrentWord(cw => cw + String.fromCharCode(keyCode));
+  };
+
+  const getWordStatuses = () => {
+    const wordAsArray = currentWord.split('');
+    const correctWordAsArray = correctWord.split('');
+
+    let wordStatuses = [];
+    for (let i = 0; i < WORD_LENGTH; i++) {
+      let letter = wordAsArray.shift();
+
+      if (letter === correctWordAsArray[i]) {
+        correctWordAsArray[i] = '';
+        wordStatuses[i] = {
+          [letter]: CORRECT_PLACEMENT
+        };
+        continue;
+      }
+
+      if (correctWordAsArray.includes(letter)) {
+        correctWordAsArray[correctWordAsArray.indexOf(letter)] = '';
+        wordStatuses[i] = {
+          [letter]: CORRECT_LETTER
+        };
+        continue;
+      }
+
+      wordStatuses[i] = {
+        [letter]: NO_MATCH
+      };
     }
 
-    if (currentWord.length > maxLength - 1) {
-      return
-    }
-
-    if (keyCode < AkeyCode || keyCode > ZkeyCode) {
-      return
-    }
-
-    const charWord = String.fromCharCode(keyCode)
-    setCurrentWord(cw => cw + charWord)
+    return wordStatuses;
   };
 
   const handleEnter = async () => {
-    setIsInvalid(false)
+    // Validate word submitted
+    setIsInvalid(false);
     if (!await validateWord(currentWord)) {
-      setIsInvalid(true)
-      setCurrentWord('')
-      return
+      setIsInvalid(true);
+      setCurrentWord('');
+      return;
     }
 
-    let newWords = [...submittedWords]
-    newWords[index] = currentWord
-    setSubmittedWords(newWords)
+    const wordStatuses = getWordStatuses();
+    // Add word to submitted words
+    let newWords = [...submittedWords];
+    newWords[attempt] = wordStatuses;
+    setSubmittedWords(newWords);
 
-    setCurrentWord('')
-    setIndex(index => index = index + 1)
+    // Update attempt count
+    setCurrentWord('');
+    setAttempt(attempt => attempt = attempt + 1);
 
-    const newKeyboard = { ...keyboard }
-
+    // Update keyboard
+    const newKeyboard = { ...keyboard };
     for (let i = 0; i < currentWord.length; i++) {
-      newKeyboard[currentWord[i]] = true
+      const currentLetter = currentWord[i];
+      const currentStatus = newKeyboard[currentLetter];
+      const newStatus = wordStatuses[i][currentLetter];
+
+      if (currentStatus > newStatus) { continue; }
+
+      newKeyboard[currentLetter] = newStatus;
     }
+    setKeyboard(newKeyboard);
 
-    setKeyboard(newKeyboard)
-
+    // Validate game status
     if (currentWord === correctWord.toUpperCase()) {
-      endGame(true)
+      endGame(true);
       return;
     }
 
-    if (index === numOfTries - 1) {
-      endGame(false)
+    if (attempt === GUESS_ATTEMPTS - 1) {
+      endGame(false);
       return;
     }
 
-    return
-  }
+    return;
+  };
 
   const endGame = (didWin) => {
-    setIsFinished(true)
-    setIsWin(didWin)
-  }
+    setIsFinished(true);
+    setIsWin(didWin);
+  };
 
   const resetGame = () => {
-    setSubmittedWords(emptyWords)
-    setIsFinished(false)
-    setIsWin(false)
-    setIndex(0)
-    setIsLoading(true)
-    setKeyboard(alphabet)
-  }
+    setSubmittedWords(EMPTY_WORDS);
+    setIsFinished(false);
+    setIsWin(false);
+    setAttempt(0);
+    setIsLoading(true);
+    setKeyboard(KEYBOARD);
+  };
 
   return (
     <div id={styles.app}>
       <DisplayApp
-        numOfTries={numOfTries}
-        index={index}
+        attempt={attempt}
         currentWord={currentWord}
         submittedWords={submittedWords}
         correctWord={correctWord}
@@ -143,9 +187,9 @@ function App() {
         resetGame={resetGame}
       >
       </StatusApp>
-      <KeyboardApp keyboard={keyboard}></KeyboardApp>
+      <KeyboardApp keyboardStatuses={keyboard}></KeyboardApp>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
