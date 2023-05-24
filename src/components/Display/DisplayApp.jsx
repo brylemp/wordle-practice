@@ -26,7 +26,7 @@ function DisplayApp(props) {
         <Row
           key={i}
           word={attempt === i ? getWordObjArr(currentWord) : submittedWords[i]}
-        ></Row>
+        />
       )}
     </div>
   );

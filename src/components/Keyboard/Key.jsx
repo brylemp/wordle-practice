@@ -5,31 +5,31 @@ import {
   NO_MATCH,
   CORRECT_PLACEMENT,
   CORRECT_LETTER,
+  BLACK,
+  WHITE,
+  LIGHT_GRAY,
+  GRAY,
+  YELLOW,
+  GREEN,
 } from './../constants';
 
-function Key({ children, status }) {
+function Key({ letter, status }) {
   let color, textColor;
 
-  const yellow = 'rgba(200,180,88,255)';
-  const green = 'rgba(107,170,100,255)';
-  const gray = 'rgba(120,124,126,255)';
-
+  textColor = WHITE;
   switch (status) {
     case NO_MATCH:
-      color = gray;
-      textColor = "white";
+      color = GRAY;
       break;
     case CORRECT_LETTER:
-      color = yellow;
-      textColor = "white";
+      color = YELLOW;
       break;
     case CORRECT_PLACEMENT:
-      color = green;
-      textColor = "white";
+      color = GREEN;
       break;
     default:
-      color = "lightgray";
-      textColor = "black";
+      color = LIGHT_GRAY;
+      textColor = BLACK;
   }
 
   const keyStyle = {
@@ -40,10 +40,10 @@ function Key({ children, status }) {
   return (
     <div className={styles.key} style={keyStyle}>
       <h3 className={styles.keyText}>
-        {children}
+        {letter}
       </h3>
     </div>
   );
 }
 
-export default Key;
+export default React.memo(Key);

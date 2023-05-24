@@ -5,35 +5,34 @@ import {
   NO_MATCH,
   CORRECT_PLACEMENT,
   CORRECT_LETTER,
+  BLACK,
+  WHITE,
+  GRAY,
+  YELLOW,
+  GREEN,
 } from './../constants';
 
 function Block({ letter, status }) {
   let color, borderColor, textColor;
 
-  const yellow = 'rgba(200,180,88,255)';
-  const green = 'rgba(107,170,100,255)';
-  const gray = 'rgba(120,124,126,255)';
-
+  textColor = WHITE;
   switch (status) {
     case NO_MATCH:
-      color = gray;
-      borderColor = gray;
-      textColor = "white";
+      color = GRAY;
+      borderColor = GRAY;
       break;
     case CORRECT_LETTER:
-      color = yellow;
-      borderColor = yellow;
-      textColor = "white";
+      color = YELLOW;
+      borderColor = YELLOW;
       break;
     case CORRECT_PLACEMENT:
-      color = green;
-      borderColor = green;
-      textColor = "white";
+      color = GREEN;
+      borderColor = GREEN;
       break;
     default:
-      color = "white";
-      textColor = "black";
-      borderColor = gray;
+      color = WHITE;
+      textColor = BLACK;
+      borderColor = GRAY;
   }
 
   const blockStyle = {
@@ -51,4 +50,4 @@ function Block({ letter, status }) {
   );
 }
 
-export default Block;
+export default React.memo(Block);

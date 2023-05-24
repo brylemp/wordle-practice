@@ -3,11 +3,52 @@
 }
 
 .statusContainer{
+  margin: 1em;
   padding: 0;
-  min-height: 13vh;
+  min-height: 18vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 1rem;
+}
+
+button.statusBtn {
+  padding: 0.75em;
+  border-width: 0px;
+  border-radius: 3px;
+  color: black;
+  transition: color 250ms, background-color 100ms;
+}
+
+button.statusBtn:hover {
+  color: white;
+  background-color: rgba(107,170,100,255);
+}
+
+@keyframes spin {
+  0% {
+    transform: translate3d(-50%, -50%, 0) rotate(0deg);
+  }
+  100% {
+    transform: translate3d(-50%, -50%, 0) rotate(360deg);
+  }
+}
+
+.loadingWheelContainer {
+  position: relative;
+}
+
+.loadingWheel::before {
+  position: absolute;
+  content: "";
+  height: 25px;
+  width: 25px;
+  top: 10%;
+  left: 10%;
+  border: solid 10px lightgray;
+  border-top-color: rgba(107,170,100,255);
+  border-bottom-color: rgba(200,180,88,255);
+  border-radius: 50%;
+  animation: 750ms linear infinite spin;
 }

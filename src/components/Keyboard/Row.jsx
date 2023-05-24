@@ -7,7 +7,11 @@ function Row({ keyboardStatuses, letters }) {
   return (
     <div className={styles.row}>
       {letters.map(letter => (
-        <Key key={letter} status={keyboardStatuses[letter]}>{letter}</Key>
+        <Key
+          key={letter}
+          letter={letter}
+          status={keyboardStatuses[letter]}
+        />
       ))}
     </div>
   );

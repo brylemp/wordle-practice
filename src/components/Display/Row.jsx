@@ -15,7 +15,7 @@ function Row({ word }) {
             key={letter + i}
             letter={letter}
             status={status}
-          ></Block>
+          />
         );
       })}
     </div>

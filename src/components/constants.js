@@ -15,6 +15,14 @@ export const NO_MATCH = 1;
 export const CORRECT_LETTER = 2;
 export const CORRECT_PLACEMENT = 3;
 
+// Status colors
+export const YELLOW = 'rgba(200,180,88,255)';
+export const GREEN = 'rgba(107,170,100,255)';
+export const GRAY = 'rgba(120,124,126,255)';
+export const LIGHT_GRAY = 'lightgray';
+export const WHITE = 'white';
+export const BLACK = 'black';
+
 // Default state values
 export const EMPTY_LETTER = {'':0};
 export const EMPTY_WORD = [EMPTY_LETTER,EMPTY_LETTER,EMPTY_LETTER,EMPTY_LETTER,EMPTY_LETTER];

@@ -41,13 +41,13 @@ function App() {
   // Set starting word
   useEffect(() => {
     async function fetchData() {
-      if (!isLoading) { return; }
+      if (isFinished) { return; }
       const gotWord = await getWord(WORD_LENGTH);
       setCorrectWord(gotWord.toUpperCase());
       setIsLoading(false);
     }
     fetchData();
-  }, [isLoading]);
+  }, [isFinished]);
 
   // Capture keyboard on keydown
   useEffect(() => {
@@ -112,11 +112,15 @@ function App() {
   const handleEnter = async () => {
     // Validate word submitted
     setIsInvalid(false);
+    setIsLoading(true);
     if (!await validateWord(currentWord)) {
       setIsInvalid(true);
+      setIsLoading(false);
       setCurrentWord('');
       return;
     }
+
+    setIsLoading(false);
 
     const wordStatuses = getWordStatuses();
     // Add word to submitted words

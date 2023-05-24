@@ -13,12 +13,14 @@ function StatusApp(props) {
 
   return (
     <div className={styles.statusContainer}>
-      {isLoading && <h1 className={styles.statusText}>Loading</h1>}
+      {isLoading && <div className={styles.loadingWheelContainer}>
+        <div className={styles.loadingWheel}></div>
+      </div>}
       {isInvalid && <h1 className={styles.statusText}>Invalid Word</h1>}
       {isFinished && <h1 className={styles.statusText}>{isWin ? ` Congratulations!` : `The word was: ${correctWord}`}</h1>}
       {isFinished &&
         <button
-          className={styles.statusText}
+          className={`${styles.statusText} ${styles.statusBtn}`}
           onClick={resetGame}
         >
           Reset
@@ -28,4 +30,8 @@ function StatusApp(props) {
   );
 }
 
-export default StatusApp;
+export default React.memo(StatusApp, (prevProps, nextProps) => {
+  return prevProps.isFinished === nextProps.isFinished &&
+    prevProps.isInvalid === nextProps.isInvalid &&
+    prevProps.isLoading === nextProps.isLoading;
+});

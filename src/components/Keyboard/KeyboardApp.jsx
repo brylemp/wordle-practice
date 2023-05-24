@@ -11,7 +11,11 @@ function KeyboardApp({ keyboardStatuses }) {
   return (
     <div className={styles.keyboard}>
       {[Row1, Row2, Row3].map((row, i) => (
-        <Row key={i} keyboardStatuses={keyboardStatuses} letters={row}></Row>
+        <Row
+          key={i}
+          keyboardStatuses={keyboardStatuses}
+          letters={row}
+        />
       ))}
     </div>
   );
