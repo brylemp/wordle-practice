@@ -3,3 +3,12 @@
   margin: 0 auto;
   text-align: center;
 }
+
+.pressed {
+  animation: press 125ms;
+}
+
+@keyframes press {
+  from {transform: translate(0px, 0px);}
+  to {transform: translate(2px, 2px);}
+}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createContext } from 'react';
 
 import KeyboardApp from './Keyboard/KeyboardApp';
 import DisplayApp from './Display/DisplayApp';
@@ -26,6 +26,8 @@ import {
   CORRECT_LETTER,
 } from './constants';
 
+export const KeyboardContext = createContext(null);
+
 function App() {
   const [correctWord, setCorrectWord] = useState('RANDO');
   const [currentWord, setCurrentWord] = useState('');
@@ -41,6 +43,7 @@ function App() {
   // Set starting word
   useEffect(() => {
     async function fetchData() {
+      console.log("is finished", isFinished);
       if (isFinished) { return; }
       const gotWord = await getWord(WORD_LENGTH);
       setCorrectWord(gotWord.toUpperCase());
@@ -175,24 +178,32 @@ function App() {
 
   return (
     <div id={styles.app}>
-      <DisplayApp
-        attempt={attempt}
-        currentWord={currentWord}
-        submittedWords={submittedWords}
-        correctWord={correctWord}
-      >
-      </DisplayApp>
-      <StatusApp
-        correctWord={correctWord}
-        isLoading={isLoading}
-        isInvalid={isInvalid}
-        isFinished={isFinished}
-        isWin={isWin}
-        resetGame={resetGame}
-      >
-      </StatusApp>
-      <KeyboardApp keyboardStatuses={keyboard}></KeyboardApp>
-    </div>
+      <div className={styles.displayContainer}>
+        <DisplayApp
+          attempt={attempt}
+          currentWord={currentWord}
+          submittedWords={submittedWords}
+          correctWord={correctWord}
+        />
+      </div>
+      <div className={styles.statusContainer}>
+        <StatusApp
+          correctWord={correctWord}
+          isLoading={isLoading}
+          isInvalid={isInvalid}
+          isFinished={isFinished}
+          isWin={isWin}
+          resetGame={resetGame}
+        />
+      </div>
+      <div className={styles.keyboardContainer}>
+        <KeyboardContext.Provider value={{ setCurrentWord, handleEnter, isFinished }}>
+          <KeyboardApp
+            keyboardStatuses={keyboard}
+          />
+        </KeyboardContext.Provider>
+      </div>
+    </div >
   );
 }
 

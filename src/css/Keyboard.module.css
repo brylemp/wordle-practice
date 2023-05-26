@@ -1,27 +1,70 @@
 .keyboard{
-  border-radius: 10px;
+  margin: 0 auto;
+  width: 100%;
+  align-self: center;
+  
   display: flex;
   flex-direction: column;
-  width: 100%;
 }
 
 .row{
   display: flex;
   flex-direction: row;
   justify-content: center;
-  padding: 0.5rem;
+  gap: 0.5rem;
+  padding: 0.5rem 0 0.5rem 0;
 }
 
 .key{
+  color: black;
+  background-color: lightgray;
   border-radius: 5px;
-  margin-left: 0.25rem;
-  margin-right: 0.25rem;
   width: 2rem;
-  height: 2.5rem;
+  height: 3rem;
+}
+
+.key.noMatch{
+  color: white;
+  background-color: var(--gray);
+}
+
+.key.correctLetter{
+  color: white;
+  background-color: var(--yellow);
+}
+
+.key.correctPlacement{
+  color: white;
+  background-color: var(--green);
+}
+
+.key.special{
+  border-radius: 5px;
+  width: 3rem;
+  height: 3rem;
+}
+
+.key:hover{
+  cursor: pointer;
+  color: white;
+  background-color: var(--gray);
+  transition: background-color 250ms;
 }
 
 .keyText{
-  margin-top: -1px;
+  margin-top: 2px;
   padding-top: 5px;
   height: 100%;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.keyText.special{
+  line-height: 2.5rem;
+  font-size: 1.5rem;
+  height: 80%;
 }

@@ -12,4 +12,8 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
+  --gray: rgba(120,124,126,255);
+  --yellow: rgba(200,180,88,255);
+  --green: rgba(107,170,100,255);
 }

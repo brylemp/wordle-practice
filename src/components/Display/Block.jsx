@@ -5,45 +5,29 @@ import {
   NO_MATCH,
   CORRECT_PLACEMENT,
   CORRECT_LETTER,
-  BLACK,
-  WHITE,
-  GRAY,
-  YELLOW,
-  GREEN,
 } from './../constants';
 
 function Block({ letter, status }) {
-  let color, borderColor, textColor;
+  let blockStyle;
 
-  textColor = WHITE;
   switch (status) {
     case NO_MATCH:
-      color = GRAY;
-      borderColor = GRAY;
+      blockStyle = styles.noMatch;
       break;
     case CORRECT_LETTER:
-      color = YELLOW;
-      borderColor = YELLOW;
+      blockStyle = styles.correctLetter;
       break;
     case CORRECT_PLACEMENT:
-      color = GREEN;
-      borderColor = GREEN;
+      blockStyle = styles.correctPlacement;
       break;
-    default:
-      color = WHITE;
-      textColor = BLACK;
-      borderColor = GRAY;
   }
 
-  const blockStyle = {
-    backgroundColor: color,
-    border: `3px solid ${borderColor}`,
-    color: textColor,
-  };
+  const blockClass = [styles.block, blockStyle];
+  const blockTextClasses = [styles.blockText];
 
   return (
-    <div className={styles.block} style={blockStyle}>
-      <h1 className={styles.blockText}>
+    <div className={`${blockClass.join(' ')} pressed`}>
+      <h1 className={blockTextClasses.join(' ')}>
         {letter}
       </h1>
     </div>

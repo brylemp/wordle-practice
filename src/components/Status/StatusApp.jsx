@@ -12,7 +12,7 @@ function StatusApp(props) {
   } = props;
 
   return (
-    <div className={styles.statusContainer}>
+    <div className={styles.status}>
       {isLoading && <div className={styles.loadingWheelContainer}>
         <div className={styles.loadingWheel}></div>
       </div>}

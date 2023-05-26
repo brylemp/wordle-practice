@@ -1,7 +1,26 @@
 #app {
-  margin: 0;
-  padding-top: 2rem;
+  margin: 0 auto;
+  height: 95vh;
+
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: center;
+}
+
+.displayContainer{
+  align-self: center;
+}
+
+.statusContainer{
+  min-height: 15vh;
+  align-self: center;
+  
+  display: flex;
+}
+
+.keyboardContainer{
+  width: 100%;
+  align-self: center;
+
+  display: flex;
 }

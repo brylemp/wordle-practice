@@ -1,16 +1,15 @@
-.statusText {
-  margin: 0;
-}
-
-.statusContainer{
-  margin: 1em;
+.status{
   padding: 0;
-  min-height: 18vh;
+  align-items: center;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
   gap: 1rem;
+}
+
+.statusText {
+  margin: 0;
 }
 
 button.statusBtn {
@@ -25,16 +24,7 @@ button.statusBtn:hover {
   color: white;
   background-color: rgba(107,170,100,255);
 }
-
-@keyframes spin {
-  0% {
-    transform: translate3d(-50%, -50%, 0) rotate(0deg);
-  }
-  100% {
-    transform: translate3d(-50%, -50%, 0) rotate(360deg);
-  }
-}
-
+  
 .loadingWheelContainer {
   position: relative;
 }
@@ -51,4 +41,13 @@ button.statusBtn:hover {
   border-bottom-color: rgba(200,180,88,255);
   border-radius: 50%;
   animation: 750ms linear infinite spin;
+}
+
+@keyframes spin {
+  0% {
+    transform: translate3d(-50%, -50%, 0) rotate(0deg);
+  }
+  100% {
+    transform: translate3d(-50%, -50%, 0) rotate(360deg);
+  }
 }
