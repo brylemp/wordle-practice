@@ -43,7 +43,6 @@ function App() {
   // Set starting word
   useEffect(() => {
     async function fetchData() {
-      console.log("is finished", isFinished);
       if (isFinished) { return; }
       const gotWord = await getWord(WORD_LENGTH);
       setCorrectWord(gotWord.toUpperCase());
